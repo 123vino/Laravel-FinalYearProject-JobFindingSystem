@@ -1,0 +1,59 @@
+ protected $fillable = ['jobName', 'com_id','jobDescription', 'location', 'skillLevel', 'workExperience', 'education','salary','appDate'];
+    
+    public function company(){
+        return $this->belongsTo('Company');
+    }
+
+      //validate request
+        $request->validate([
+         'jobName'=>'required',
+         'jobDescription'=>'required',
+         'location'=>'required',
+         'skillLevel'=>'required',
+         'workExperience'=>'required',
+         'education'=>'required',
+         'salary'=>'required',
+         'appDate'=>'required',
+        
+         ]);
+        //$data= ['LoggedUserInfo'=>Company::where('id','=',session('LoggedUser'))->first()];
+        //auth()->user()->education()->create($request->all());
+        //insert data into database
+       $job=new PostJob;
+       $job->jobName=$request->jobName;
+       $job->jobDescription=$request->jobDescription;
+       $job->location=$request->location;
+       $job->skillLevel=$request->skillLevel;
+       $job->workExperience=$request->workExperience;
+       $job->education=$request->education;
+       $job->salary=$request->salary;
+       $job->com_id= Session::get('LoggedUser');
+       $job->appDate=$request->appDate;
+
+       $save=$job->save();
+
+        if($save){
+          return view('company.job.create');
+
+        }else{
+          return view('company.job.create');
+        }
+
+        $table->id();
+            $table->unsignedBigInteger('com_id');
+            $table->string('jobName');
+            $table->string('jobDescription');
+            $table->string('location');
+            $table->string('skillLevel');
+            $table->string('workExperience');
+            $table->string('education');
+            $table->string('salary');
+            $table->date('appDate');
+            $table->timestamps();
+
+
+            $postJob = PostJob::all();
+           return view('company.job.index',compact('postJob'));
+
+
+         return view('company.job.edit',compact('postJob'));
